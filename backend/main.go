@@ -25,8 +25,6 @@ type Book struct {
 var collection *mongo.Collection
 
 func main() {
-	fmt.Println("Hello world")
-
 	if os.Getenv("ENV") != "production" {
 		// Load the .env file if not in production
 		err := godotenv.Load(".env")
