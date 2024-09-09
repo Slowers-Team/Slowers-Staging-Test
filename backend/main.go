@@ -55,7 +55,7 @@ func main() {
 
 	app.Get("/api/books", getBooks)
 	app.Post("/api/books", addBook)
-	app.Patch("/api/books/:id", updateBook)
+	app.Patch("/api/books/:id", setBookStatusToCompleted)
 	app.Delete("/api/books/:id", deleteBook)
 
 	port := os.Getenv("PORT")
@@ -113,7 +113,7 @@ func addBook(c *fiber.Ctx) error {
 	return c.Status(201).JSON(book)
 }
 
-func updateBook(c *fiber.Ctx) error {
+func setBookStatusToCompleted(c *fiber.Ctx) error {
 	id := c.Params("id")
 	objectID, err := primitive.ObjectIDFromHex(id)
 
