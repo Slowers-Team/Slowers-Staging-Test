@@ -9,9 +9,8 @@ npm install
 npm run build
 ```
 3. Move the `frontend/dist` directory to `backend/client` (If the directory `backend/client` does not exist yet create it now)
-4. Inside the `backend` directory, create `.env` file with the `ENV` and `MONGODB_URI` environment variables set as below (MongoDB URI might vary depending on your configuration)
+4. Inside the `backend` directory, create `.env` file with the `MONGODB_URI` environment variable set as below (though the exact MongoDB URI might vary depending on your configuration)
 ```
-ENV=production
 MONGODB_URI=mongodb://localhost:27017
 ```
 5. Inside the `backend` directory, start the app with the command `go run main.go`
