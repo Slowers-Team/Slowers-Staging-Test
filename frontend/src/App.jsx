@@ -17,7 +17,7 @@ const App = () => {
   const [books, setBooks] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:5001/api/books')
+    fetch('/api/books')
     .then(res => {
       return res.json()
     })
