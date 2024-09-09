@@ -1,8 +1,4 @@
-//import axios from 'axios'
 import { useEffect, useState } from 'react'
-
-// const promise = axios.get('http://localhost:5001/api/books')
-// console.log(promise)
 
 const BookList = ({ books }) => {
   return (
