@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const BookList = ({ books }) => {
   return (
@@ -17,14 +18,9 @@ const App = () => {
   const [books, setBooks] = useState(null)
 
   useEffect(() => {
-    fetch('/api/books')
-    .then(res => {
-      return res.json()
-    })
-    .then(data => {
-      console.log(data)
-      setBooks(data)
-    })
+    axios
+      .get('/api/books')
+      .then(response => setBooks(response.data))
   }, [])
 
   return (
