@@ -48,7 +48,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Connected to MONGODB ATLAS")
+	fmt.Println("Connected to MongoDB")
 
 	collection = client.Database("library").Collection("books")
 
