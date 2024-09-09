@@ -1,5 +1,65 @@
-import { useEffect, useState } from 'react'
+/* eslint-disable react/prop-types */
 import axios from 'axios'
+import { useEffect, useState } from 'react'
+
+const App = () => {
+  const [books, setBooks] = useState([])
+  const [newBookTitle, setNewBookTitle] = useState('')
+  const [newBookAuthor, setNewBookAuthor] = useState('')
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('/api/books')
+      .then(response => {
+        console.log('promise fulfilled')
+        setBooks(response.data)
+      })
+  }, [])
+
+  const addBook = event => {
+    event.preventDefault()
+    const bookObject = {
+      title: newBookTitle,
+      author: newBookAuthor
+    }
+
+    axios
+      .post('/api/books', bookObject)
+      .then(response => {
+        console.log(response)
+        setBooks(books.concat(response.data))
+        setNewBookTitle('')
+        setNewBookAuthor('')
+      })
+  }
+
+  const handleBookTitleChange = (event) => {
+    console.log(event.target.value)
+    setNewBookTitle(event.target.value)
+  }
+
+  const handleBookAuthorChange = (event) => {
+    console.log(event.target.value)
+    setNewBookAuthor(event.target.value)
+  }
+
+
+  return (
+    <div>
+      <h1>Books</h1>
+      <BookForm 
+        event={addBook}
+        title={newBookTitle}
+        handleBookTitleChange={handleBookTitleChange}
+        author={newBookAuthor}
+        handleBookAuthorChange={handleBookAuthorChange}
+      />
+      {books && <BookList books={books} />}
+    </div>
+  )
+
+}
 
 const BookList = ({ books }) => {
   return (
@@ -14,21 +74,22 @@ const BookList = ({ books }) => {
   )
 }
 
-const App = () => {
-  const [books, setBooks] = useState(null)
-
-  useEffect(() => {
-    axios
-      .get('/api/books')
-      .then(response => setBooks(response.data))
-  }, [])
-
+const BookForm = ({ event, title, handleBookTitleChange, author, handleBookAuthorChange }) => {
   return (
     <div>
-      {books && <BookList books={books} />}
+      <form onSubmit={event}>
+        <div>
+          title: <input value={title} onChange={handleBookTitleChange} />
+        </div>
+        <div>
+          author: <input value={author} onChange={handleBookAuthorChange}/>
+        </div>
+        <div>
+          <button type='submit'>save</button>
+        </div>
+      </form>
     </div>
   )
-
 }
 
 export default App
