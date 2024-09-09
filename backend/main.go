@@ -74,7 +74,6 @@ func main() {
 	}
 
 	log.Fatal((app.Listen("0.0.0.0:" + port)))
-
 }
 
 func getBooks(c *fiber.Ctx) error {
