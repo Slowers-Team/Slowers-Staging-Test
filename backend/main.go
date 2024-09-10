@@ -89,21 +89,25 @@ func addBook(c *fiber.Ctx) error {
 	book := new(Book)
 
 	if err := c.BodyParser(book); err != nil {
-		return err
+		return c.Status(400).SendString(err.Error())
 	}
 
 	if book.Title == "" {
-		return c.Status(400).JSON(fiber.Map{"error": "Book title cannot be empty"})
+		return c.Status(400).SendString("Book title cannot be empty")
 	}
 
-	insertResult, err := collection.InsertOne(context.Background(), book)
+	insertResult, err := collection.InsertOne(c.Context(), book)
 	if err != nil {
-		return err
+		return c.Status(500).SendString(err.Error())
 	}
 
-	book.ID = insertResult.InsertedID.(primitive.ObjectID)
+	filter := bson.M{"_id": insertResult.InsertedID}
+	createdRecord := collection.FindOne(c.Context(), filter)
 
-	return c.Status(201).JSON(book)
+	createdBook := &Book{}
+	createdRecord.Decode(createdBook)
+
+	return c.Status(201).JSON(createdBook)
 }
 
 func setBookStatusToCompleted(c *fiber.Ctx) error {
