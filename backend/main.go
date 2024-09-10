@@ -72,22 +72,14 @@ func main() {
 }
 
 func getBooks(c *fiber.Ctx) error {
-	var books []Book
-
 	cursor, err := collection.Find(context.Background(), bson.M{})
-
 	if err != nil {
 		return err
 	}
 
-	defer cursor.Close(context.Background())
-
-	for cursor.Next(context.Background()) {
-		var book Book
-		if err := cursor.Decode(&book); err != nil {
-			return err
-		}
-		books = append(books, book)
+	var books []Book
+	if err = cursor.All(context.Background(), &books); err != nil {
+		return err
 	}
 
 	return c.JSON(books)
