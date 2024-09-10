@@ -28,19 +28,26 @@ func main() {
 		log.Println("No .env file found")
 	}
 
-	MONGODB_URI := os.Getenv("MONGODB_URI")
-	clientOptions := options.Client().ApplyURI(MONGODB_URI)
+	mongoURI := os.Getenv("MONGODB_URI")
+	if mongoURI == "" {
+		log.Fatal("Set your 'MONGODB_URI' environment variable. " +
+			"See: " +
+			"www.mongodb.com/docs/drivers/go/current/usage-examples/#environment-variable")
+	}
+	clientOptions := options.Client().ApplyURI(mongoURI)
 	client, err := mongo.Connect(context.Background(), clientOptions)
-
-	defer client.Disconnect(context.Background())
-
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	err = client.Ping(context.Background(), nil)
-	if err != nil {
-		log.Fatal(err)
+	defer func() {
+		if err := client.Disconnect(context.Background()); err != nil {
+			panic(err)
+		}
+	}()
+
+	if err := client.Ping(context.Background(), nil); err != nil {
+		panic(err)
 	}
 
 	fmt.Println("Connected to MongoDB")
