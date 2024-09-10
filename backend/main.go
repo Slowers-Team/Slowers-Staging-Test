@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
@@ -33,7 +34,7 @@ func main() {
 			"See: " +
 			"www.mongodb.com/docs/drivers/go/current/usage-examples/#environment-variable")
 	}
-	clientOptions := options.Client().ApplyURI(mongoURI)
+	clientOptions := options.Client().ApplyURI(mongoURI).SetTimeout(10*time.Second)
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		panic(err)
