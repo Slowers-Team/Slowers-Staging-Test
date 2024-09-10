@@ -24,12 +24,8 @@ type Book struct {
 var collection *mongo.Collection
 
 func main() {
-	if os.Getenv("ENV") != "production" {
-		// Load the .env file if not in production
-		err := godotenv.Load(".env")
-		if err != nil {
-			log.Fatal("Error loading .env file:", err)
-		}
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
 	}
 
 	MONGODB_URI := os.Getenv("MONGODB_URI")
