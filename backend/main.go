@@ -115,18 +115,18 @@ func setBookStatusToCompleted(c *fiber.Ctx) error {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
-		return c.Status(400).JSON(fiber.Map{"error": "Invalid book ID"})
+		return c.SendStatus(400)
 	}
 
 	filter := bson.M{"_id": objectID}
 	update := bson.M{"$set": bson.M{"completed": true}}
 
-	_, err = collection.UpdateOne(context.Background(), filter, update)
+	_, err = collection.UpdateOne(c.Context(), filter, update)
 	if err != nil {
-		return err
+		return c.SendStatus(500)
 	}
 
-	return c.Status(200).JSON(fiber.Map{"success": true})
+	return c.SendStatus(200)
 
 }
 
