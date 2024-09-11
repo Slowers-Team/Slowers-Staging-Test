@@ -17,6 +17,7 @@ COPY . .
 
 WORKDIR /opt/app-root/src/frontend
 RUN \
+    ls -lR && \
     npm install --unsafe-perm && \
     npm run build && \
     mkdir ../backend/client && \
