@@ -13,15 +13,17 @@ ENV STAGING=$STAGING
 ARG E2E
 ENV E2E=$E2E
 
-COPY . .
+WORKDIR /opt/app-root/src/backend
+COPY backend/* ./
+RUN mkdir client
 
 WORKDIR /opt/app-root/src/frontend
+COPY frontend/package* ./
+RUN npm ci --omit-dev --ignore-scripts
+COPY frontend/* ./
 RUN \
-    ls -lR && \
-    npm install --unsafe-perm && \
     npm run build && \
-    mkdir ../backend/client && \
-    mv dist ../backend/client/
+    mv dist /opt/app-root/src/backend/client/
 
 WORKDIR /opt/app-root/src/backend
 
