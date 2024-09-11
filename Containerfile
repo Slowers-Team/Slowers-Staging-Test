@@ -11,17 +11,9 @@ RUN mkdir -m ug+rwx client
 COPY backend/* ./
 
 WORKDIR /opt/app-root/src/frontend
-RUN ls -l ..
-RUN ls -l .
 COPY frontend/package* ./
-RUN ls -l ..
-RUN ls -l .
 RUN npm ci --omit-dev --ignore-scripts
-RUN ls -l ..
-RUN ls -l .
 COPY frontend/ ./
-RUN ls -l ..
-RUN ls -l .
 RUN npm run build
 RUN mv dist /opt/app-root/src/backend/client/
 
