@@ -8,16 +8,18 @@ RUN mkdir -m ug+rwx frontend
 
 WORKDIR /opt/app-root/src/backend
 RUN mkdir -m ug+rwx client
-COPY backend/* ./
+COPY --chmod=775 backend/* ./
 
 WORKDIR /opt/app-root/src/frontend
-COPY frontend/package* ./
+COPY --chmod=775 frontend/package* ./
 RUN npm ci --omit-dev --ignore-scripts
-COPY frontend/ ./
+COPY --chmod=775 frontend/ ./
 RUN npm run build
 RUN mv dist /opt/app-root/src/backend/client/
 
 WORKDIR /opt/app-root/src/backend
+
+ENV GOPATH=/opt/app-root/src/backend/go
 
 EXPOSE 5001
 
