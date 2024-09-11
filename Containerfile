@@ -2,7 +2,7 @@ FROM registry.access.redhat.com/ubi9/go-toolset
 
 ENV TZ="Europe/Helsinki"
 
-ENV GOPATH=/opt/app-root/src/backend
+ENV GOPATH=/opt/app-root/src/backend/go
 
 WORKDIR /opt/app-root/src
 RUN mkdir -m 775 .cache
