@@ -3,8 +3,8 @@ FROM registry.access.redhat.com/ubi9/go-toolset
 ENV TZ="Europe/Helsinki"
 
 WORKDIR /opt/app-root/src/backend
-COPY backend/* ./
 RUN ls -lR .. && mkdir client
+COPY backend/* ./
 
 WORKDIR /opt/app-root/src/frontend
 COPY frontend/package* ./
