@@ -13,12 +13,17 @@ ENV STAGING=$STAGING
 ARG E2E
 ENV E2E=$E2E
 
-COPY package* ./
-RUN npm ci --omit-dev --ignore-scripts
 COPY . .
 
-RUN npm run build
+WORKDIR /opt/app-root/src/frontend
+RUN \
+    npm install && \
+    npm run build && \
+    mkdir ../backend/client && \
+    mv dist ../backend/client/
 
-EXPOSE 8000
+WORKDIR /opt/app-root/src/backend
 
-CMD ["npm", "run", "prod"]
+EXPOSE 5001
+
+CMD ["go", "run", "main.go"]
