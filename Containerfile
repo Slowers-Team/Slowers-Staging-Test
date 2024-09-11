@@ -3,6 +3,7 @@ FROM registry.access.redhat.com/ubi9/go-toolset
 ENV TZ="Europe/Helsinki"
 
 ENV GOPATH=/opt/app-root/src/backend/go
+ENV MONGODB_URI=mongodb://root:root@slowers-mongodb
 
 WORKDIR /opt/app-root/src
 RUN mkdir -m 775 .cache
