@@ -14,7 +14,6 @@ ARG E2E
 ENV E2E=$E2E
 
 COPY . .
-RUN chgrp -R 0 /opt/app-root/src && chmod -R g=u /opt/app-root/src
 
 WORKDIR /opt/app-root/src/frontend
 RUN \
