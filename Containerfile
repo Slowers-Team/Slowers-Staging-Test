@@ -19,7 +19,7 @@ RUN ls -l .
 RUN npm ci --omit-dev --ignore-scripts
 RUN ls -l ..
 RUN ls -l .
-COPY --parents frontend/* ./
+COPY frontend/ ./
 RUN ls -l ..
 RUN ls -l .
 RUN npm run build
