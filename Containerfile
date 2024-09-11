@@ -2,19 +2,20 @@ FROM registry.access.redhat.com/ubi9/go-toolset
 
 ENV TZ="Europe/Helsinki"
 
-RUN mkdir -m 775 /src
+WORKDIR /opt/app-root/src
+RUN mkdir -m 775 app
 
-WORKDIR /src
+WORKDIR /opt/app-root/src/app
 COPY --chmod=775 . .
 
-WORKDIR /src/frontend
+WORKDIR /opt/app-root/src/app/frontend
 RUN \
     npm ci --omit-dev --ignore-scripts && \
     npm run build && \
-    mkdir -m 775 /src/backend/client && \
-    mv dist /src/backend/client/
+    mkdir -m 775 /opt/app-root/src/app/backend/client && \
+    mv dist /opt/app-root/src/app/backend/client/
 
-WORKDIR /src/backend
+WORKDIR /opt/app-root/src/app/backend
 
 EXPOSE 5001
 
