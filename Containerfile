@@ -17,7 +17,7 @@ COPY . .
 
 WORKDIR /opt/app-root/src/frontend
 RUN \
-    npm ci --omit-dev --ignore-scripts && \
+    npm install --unsafe-perm && \
     npm run build && \
     mkdir ../backend/client && \
     mv dist ../backend/client/
