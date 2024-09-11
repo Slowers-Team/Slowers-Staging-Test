@@ -2,9 +2,7 @@ FROM registry.access.redhat.com/ubi9/nodejs-18-minimal
 
 ENV TZ="Europe/Helsinki"
 
-USER slowers
-
-WORKDIR /home/slowers/app
+WORKDIR /opt/app-root/src
 
 ARG BASE_PATH
 ENV BASE_PATH=$BASE_PATH
@@ -16,15 +14,17 @@ ARG E2E
 ENV E2E=$E2E
 
 COPY . .
+RUN chgrp root backend && chmod 660 backend
+RUN chgrp root frontend && chmod 660 frontend
 
-WORKDIR /home/slowers/app/frontend
+WORKDIR /opt/app-root/src/frontend
 RUN \
     npm install && \
     npm run build && \
     mkdir ../backend/client && \
     mv dist ../backend/client/
 
-WORKDIR /home/slowers/app/backend
+WORKDIR /opt/app-root/src/backend
 
 EXPOSE 5001
 
