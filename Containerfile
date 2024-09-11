@@ -3,11 +3,14 @@ FROM registry.access.redhat.com/ubi9/go-toolset
 ENV TZ="Europe/Helsinki"
 
 WORKDIR /opt/app-root/src/backend
-RUN ls -lR .. && mkdir client
+RUN mkdir client
 COPY backend/* ./
 
 WORKDIR /opt/app-root/src/frontend
 COPY frontend/package* ./
+RUN ls -lR ..
+RUN chmod -R g+w .
+RUN ls -lR ..
 RUN npm ci --omit-dev --ignore-scripts
 COPY frontend/* ./
 RUN \
