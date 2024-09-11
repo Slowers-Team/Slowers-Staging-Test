@@ -4,7 +4,9 @@ ENV TZ="Europe/Helsinki"
 
 WORKDIR /opt/app-root/src/backend
 RUN mkdir client
+RUN ls -lR ..
 COPY backend/* ./
+RUN ls -lR ..
 
 WORKDIR /opt/app-root/src/frontend
 COPY frontend/package* ./
