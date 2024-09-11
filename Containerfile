@@ -15,7 +15,7 @@ ENV E2E=$E2E
 
 WORKDIR /opt/app-root/src/backend
 COPY backend/* ./
-RUN mkdir client
+RUN ls -lR .. && mkdir client
 
 WORKDIR /opt/app-root/src/frontend
 COPY frontend/package* ./
