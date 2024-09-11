@@ -1,6 +1,6 @@
 module github.com/amandahamynen/reading-tracker
 
-go 1.23.0
+go 1.21.11
 
 require (
 	github.com/gofiber/fiber v1.14.6
