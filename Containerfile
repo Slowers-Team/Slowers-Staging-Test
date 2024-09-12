@@ -1,32 +1,22 @@
-FROM docker.io/library/golang:alpine AS backend
+FROM docker.io/library/golang:1.23.0-alpine3.20 AS backend-build
 
-WORKDIR /src
-
-COPY backend/go.mod backend/go.sum ./
-RUN go mod download
-
-COPY backend/*.go ./
-
+WORKDIR /backend
+COPY backend/ ./
 RUN go build -o /start-server
 
-FROM registry.access.redhat.com/ubi9/nodejs-18-minimal AS frontend
+FROM registry.access.redhat.com/ubi9/nodejs-18-minimal AS frontend-build
 
-WORKDIR /opt/app-root/src
-RUN mkdir -m 775 frontend
+ENV NODE_ENV=production
 
-WORKDIR /opt/app-root/src/frontend
-COPY --chmod=775 frontend/ ./
-RUN \
-    npm ci --omit-dev --ignore-scripts && \
-    npm run build
+WORKDIR /frontend
+COPY  frontend/ ./
+RUN npm clean-install && npm run build
 
 FROM scratch
 
-ENV TZ="Europe/Helsinki"
-
 WORKDIR /app
-COPY --from=backend /start-server /app/
-COPY --from=frontend /opt/app-root/src/frontend/dist/ /app/client/dist/
+COPY --from=backend-build /start-server ./
+COPY --from=frontend-build /opt/app-root/src/frontend/dist client/
 
 EXPOSE 5001
 
