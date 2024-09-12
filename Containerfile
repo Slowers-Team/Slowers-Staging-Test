@@ -1,4 +1,4 @@
-FROM golang:alpine AS backend
+FROM docker.io/library/golang:alpine AS backend
 
 WORKDIR /src
 
