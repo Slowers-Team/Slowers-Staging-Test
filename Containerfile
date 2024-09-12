@@ -18,8 +18,8 @@ RUN mkdir -m 775 frontend
 
 WORKDIR /opt/app-root/src/frontend
 COPY --chmod=775 frontend/ ./
-RUN \
-    npm ci --omit-dev --ignore-scripts && \
+RUN \\
+    npm ci --omit-dev --ignore-scripts && \\
     npm run build
 
 FROM scratch
