@@ -22,13 +22,17 @@ RUN \
     npm ci --omit-dev --ignore-scripts && \
     npm run build
 
-FROM scratch
+FROM docker.io/library/busybox
 
 ENV TZ="Europe/Helsinki"
 
-COPY --from=backend /start-server /.env /
-COPY --from=frontend /opt/app-root/src/frontend/dist/ /client/dist/
+WORKDIR /app
+COPY --from=backend /start-server /.env /app/
+COPY --from=frontend /opt/app-root/src/frontend/dist/ /app/client/dist/
+RUN ls -lR
+RUN echo $MONGODB_URI
+RUN cat .env
 
 EXPOSE 5001
 
-CMD ["/start-server"]
+CMD ["./start-server"]
