@@ -24,17 +24,11 @@ FROM scratch
 
 ENV TZ="Europe/Helsinki"
 
-WORKDIR /opt/app-root/src
-RUN mkdir -m 775 app
-
-WORKDIR /opt/app-root/src/app
-RUN \
-    mkdir -m 775 client && \
-    echo MONGODB_URI=mongodb://root:root@slowers-mongodb > .env
-COPY --from=backend /start-server ./
-COPY --from=frontend /opt/app-root/src/frontend/dist ./client/
+RUN echo MONGODB_URI=mongodb://root:root@slowers-mongodb > .env
+COPY --from=backend /start-server /start-server
+COPY --from=frontend /opt/app-root/src/frontend/dist/ /client/dist/
 RUN ls -lR
 
 EXPOSE 5001
 
-CMD ["./start-server"]
+CMD ["/start-server"]
