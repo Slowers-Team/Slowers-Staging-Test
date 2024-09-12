@@ -12,9 +12,6 @@ services:
 
   db:
     image: docker.io/mongo:7.0.0
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=root
     ports:
       - 27017:27017
     container_name: test_db
