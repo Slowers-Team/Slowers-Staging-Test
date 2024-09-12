@@ -7,7 +7,7 @@ RUN go mod download
 
 COPY backend/*.go ./
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /start-server
+RUN GOOS=linux go build -o /start-server
 
 FROM registry.access.redhat.com/ubi9/nodejs-18-minimal AS frontend
 
