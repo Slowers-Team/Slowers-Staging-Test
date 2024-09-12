@@ -7,9 +7,7 @@ RUN go mod download
 
 COPY backend/*.go ./
 
-RUN \
-    CGO_ENABLED=0 GOOS=linux go build -o /start-server && \
-    echo MONGODB_URI=mongodb://root:root@slowers-mongodb > /.env
+RUN CGO_ENABLED=0 GOOS=linux go build -o /start-server
 
 FROM registry.access.redhat.com/ubi9/nodejs-18-minimal AS frontend
 
@@ -22,16 +20,13 @@ RUN \
     npm ci --omit-dev --ignore-scripts && \
     npm run build
 
-FROM docker.io/library/busybox
+FROM scratch
 
 ENV TZ="Europe/Helsinki"
 
 WORKDIR /app
-COPY --from=backend /start-server /.env /app/
+COPY --from=backend /start-server /app/
 COPY --from=frontend /opt/app-root/src/frontend/dist/ /app/client/dist/
-RUN ls -lR
-RUN echo $MONGODB_URI
-RUN cat .env
 
 EXPOSE 5001
 
