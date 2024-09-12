@@ -20,7 +20,7 @@ RUN \
     npm ci --omit-dev --ignore-scripts && \
     npm run build
 
-FROM scratch
+FROM docker.io/library/alpine
 
 ENV TZ="Europe/Helsinki"
 
