@@ -1,23 +1,40 @@
-FROM registry.access.redhat.com/ubi9/go-toolset
+FROM golang:alpine AS backend
+
+WORKDIR /src
+
+COPY backend/go.mod backend/go.sum ./
+RUN go mod download
+
+COPY backend/*.go ./
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o /start-server
+
+FROM registry.access.redhat.com/ubi9/nodejs-18-minimal AS frontend
+
+WORKDIR /opt/app-root/src
+RUN mkdir -m 775 frontend
+
+WORKDIR /opt/app-root/src/frontend
+COPY --chmod=775 frontend/ ./
+RUN \
+    npm ci --omit-dev --ignore-scripts && \
+    npm run build
+
+FROM scratch
 
 ENV TZ="Europe/Helsinki"
 
-ENV GOPATH=/opt/app-root/src/backend/go
-
 WORKDIR /opt/app-root/src
-RUN mkdir -m 775 .cache
-COPY --chmod=775 . .
+RUN mkdir -m 775 app
 
-WORKDIR /opt/app-root/src/frontend
+WORKDIR /opt/app-root/src/app
 RUN \
-    npm ci --omit-dev --ignore-scripts && \
-    npm run build && \
-    mkdir -m 775 /opt/app-root/src/backend/client && \
-    mv dist /opt/app-root/src/backend/client/
-
-WORKDIR /opt/app-root/src/backend
-RUN echo MONGODB_URI=mongodb://root:root@slowers-mongodb > .env
+    mkdir -m 775 client && \
+    echo MONGODB_URI=mongodb://root:root@slowers-mongodb > .env
+COPY --from=backend /start-server ./
+COPY --from=frontend /opt/app-root/src/frontend/dist ./client/
+RUN ls -lR
 
 EXPOSE 5001
 
-CMD ["go", "run", "main.go"]
+CMD ["./start-server"]
