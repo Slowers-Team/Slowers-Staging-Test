@@ -6,7 +6,7 @@ RUN npm clean-install && npm run build
 
 FROM docker.io/library/nginx:alpine-slim
 
-RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
+RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx /etc/nginx/conf.d
 
 COPY --from=build-stage /default.conf.template /etc/nginx/templates/
 COPY --from=build-stage /dist/ /usr/share/nginx/html/
