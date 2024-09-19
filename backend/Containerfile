@@ -1,7 +1,7 @@
 FROM docker.io/library/golang:alpine AS build-stage
 
-WORKDIR /backend
-COPY backend/ ./
+WORKDIR /
+COPY . .
 RUN go build -o /start-server
 
 FROM docker.io/library/alpine
