@@ -1,13 +1,13 @@
 FROM docker.io/library/golang:alpine AS build-stage
 
-WORKDIR /
+WORKDIR /build
 COPY . .
-RUN go build -o /start-server
+RUN go build -o /build/start-server
 
 FROM docker.io/library/alpine
 
 WORKDIR /app
-COPY --from=build-stage /start-server ./
+COPY --from=build-stage /build/start-server ./
 
 EXPOSE 5001
 
