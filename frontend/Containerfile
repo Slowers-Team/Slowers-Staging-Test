@@ -20,7 +20,7 @@ server {\n\
     }\n\
 \n\
     location ~ ^/api/(.*) {\n\
-        return 308 ${BACKEND_URL}/api/$1;\n\
+        return 308 \${BACKEND_URL}/api/\$1;\n\
     }\n\
 \n\
     error_page   500 502 503 504  /50x.html;\n\
