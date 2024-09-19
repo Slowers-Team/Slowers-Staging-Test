@@ -8,7 +8,6 @@ server {
     }
 
     location ~ ^/api/(.*) {
-        add_header 'Access-Control-Allow-Origin' '*';
         return 301 ${BACKEND_URL}/api/$1;
     }
 
