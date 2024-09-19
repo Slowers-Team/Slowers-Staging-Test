@@ -6,6 +6,11 @@ RUN npm clean-install && npm run build
 
 FROM docker.io/library/nginx:alpine-slim
 
+RUN mkdir -m 775 /var
+RUN mkdir -m 775 /var/cache
+RUN mkdir -m 775 /var/cache/nginx
+RUN mkdir -m 775 /var/cache/nginx/client_temp
+
 COPY --from=build-stage /dist/ /usr/share/nginx/html/
 
 EXPOSE 80
