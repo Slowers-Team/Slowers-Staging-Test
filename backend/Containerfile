@@ -1,0 +1,14 @@
+FROM docker.io/library/golang:alpine AS build-stage
+
+WORKDIR /backend
+COPY backend/ ./
+RUN go build -o /start-server
+
+FROM docker.io/library/alpine
+
+WORKDIR /app
+COPY --from=build-stage /start-server ./
+
+EXPOSE 5001
+
+CMD ["./start-server"]

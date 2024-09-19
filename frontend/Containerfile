@@ -1,0 +1,14 @@
+FROM docker.io/library/node:alpine AS build-stage
+
+WORKDIR /opt/app-root/src
+RUN mkdir -m 775 frontend
+
+WORKDIR /opt/app-root/src/frontend
+COPY frontend/ ./
+RUN npm clean-install && npm run build
+
+FROM docker.io/library/nginx:alpine-slim
+
+COPY --from=build-stage /opt/app-root/src/frontend/dist/ /usr/share/nginx/html/
+
+EXPOSE 80
