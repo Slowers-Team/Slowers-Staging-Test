@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  push_backend_to_registry:
+  push_to_registry:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
