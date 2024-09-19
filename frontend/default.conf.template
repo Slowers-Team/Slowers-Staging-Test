@@ -7,8 +7,8 @@ server {
         index  index.html index.htm;
     }
 
-    location = /api {
-        return 301 ${BACKEND_URL}/api;
+    location ~ ^/api/(.*) {
+        return 301 ${BACKEND_URL}/api/$1;
     }
 
     error_page   500 502 503 504  /50x.html;
