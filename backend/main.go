@@ -51,7 +51,7 @@ func main() {
 		panic(err)
 	}
 
-	log.Println("Connected to MongoDB")
+	log.Println("Connected to MongoDB000")
 
 	collection = client.Database("library").Collection("books")
 
