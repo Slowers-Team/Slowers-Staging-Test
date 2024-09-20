@@ -22,6 +22,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/slowers-test-backend
+          tags: type=raw,value=latest
 
       - name: Build and push Docker image (backend)
         id: push-backend
@@ -38,6 +39,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/slowers-test-frontend
+          tags: type=raw,value=latest
 
       - name: Build and push Docker image (frontend)
         id: push-frontend
