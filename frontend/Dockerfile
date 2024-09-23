@@ -1,11 +1,9 @@
 FROM node:18
 
-RUN mkdir -m 775 /app
-
 WORKDIR /app
 COPY . .
-RUN npm clean-install && npm run build
+RUN npm clean-install && npm run build && npm install http-server
 
-EXPOSE 8081
+EXPOSE 5173
 
-CMD npx http-server dist --port 8081 --proxy $BACKEND_URL?
+CMD npx http-server dist --port 5173 --proxy $BACKEND_URL?
