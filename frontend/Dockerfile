@@ -1,5 +1,7 @@
 FROM node:18
 
+RUN mkdir -m 775 /app
+
 WORKDIR /app
 COPY . .
 RUN npm clean-install && npm run build
