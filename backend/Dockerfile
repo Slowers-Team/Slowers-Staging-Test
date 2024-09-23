@@ -6,4 +6,4 @@ RUN go build -o start-server
 
 EXPOSE 5001
 
-CMD start-server
+CMD ./start-server
