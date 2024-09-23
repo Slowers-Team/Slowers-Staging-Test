@@ -1,4 +1,4 @@
-name: CI
+name: Staging
 
 on:
   push:
@@ -8,7 +8,7 @@ jobs:
   push_to_registry:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo
+      - name: Check out the repository
         uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
@@ -17,34 +17,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker (backend)
-        id: meta-backend
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/slowers-test-backend
-
       - name: Build and push Docker image (backend)
-        id: push-backend
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: backend
-          file: backend/Containerfile
           push: true
-          tags: ${{ steps.meta-backend.outputs.tags }}
-          labels: ${{ steps.meta-backend.outputs.labels }}
-
-      - name: Extract metadata (tags, labels) for Docker (frontend)
-        id: meta-frontend
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/slowers-test-frontend
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/slowers-test-backend:latest
 
       - name: Build and push Docker image (frontend)
-        id: push-frontend
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: frontend
-          file: frontend/Containerfile
           push: true
-          tags: ${{ steps.meta-frontend.outputs.tags }}
-          labels: ${{ steps.meta-frontend.outputs.labels }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/slowers-test-frontend:latest
